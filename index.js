@@ -21,7 +21,6 @@ io.on("connection", (socket) => {
 
   socket.on("new-message", (data) => {
     const dateMessage = new Date();
-    var options = { year: "numeric", month: "numeric", day: "numeric" };
     messages.push({
       email: data.email,
       text: data.text,
