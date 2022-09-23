@@ -1,0 +1,48 @@
+<div style="background-color: rgb(191, 191, 209); width: 50%;height: 40vh; display: flex ; justify-content: center;">
+    <div>
+        <h1 style="color: blue">Centro de Mensajes</h1>
+        <br />
+
+        <form id="formularioChat">
+            <div>
+                <input id="email" type="text" name="email" placeholder="Email" />
+            </div>
+            <br>
+            <div>
+                <input id="text" type="text" name="text" placeholder="Ingrese un Mensaje..." />
+                <button>Enviar</button>
+            </div>
+            <hr>
+        </form>
+
+        <div id="messages"></div>
+        <script>
+            socket.on("messages", (data) => {
+                renderMessages(data);
+            });
+
+            function renderMessages(data) {
+                const html = data
+                    .map((elemento) => {
+                        return `<div>
+                <strong style='color:blue; font-weight: bold;'>${elemento.email}</strong>:
+                [${elemento.date}]
+                <em>${elemento.text}</em></div>
+        `;
+                    })
+                    .join(" ");
+                document.getElementById("messages").innerHTML = html;
+            }
+
+            const formularioChat = document.getElementById('formularioChat');
+            formularioChat.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const mensaje = {
+                    email: document.getElementById("email").value,
+                    text: document.getElementById("text").value,
+                };
+                socket.emit("new-message", mensaje);
+            })
+        </script>
+    </div>
+</div>
