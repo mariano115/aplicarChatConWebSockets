@@ -1,5 +1,6 @@
 const express = require("express");
 const { Container } = require("./Container");
+const { getMensajes, addMensaje } = require("./Mensajes");
 const { Server: HttpServer } = require("http");
 const { Server: IOServer } = require("socket.io");
 const app = express();
@@ -12,16 +13,14 @@ app.use(express.json());
 const PORT = process.env.PORT || 8080;
 let container = new Container([]);
 
-const messages = [];
-
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   console.log("nuevo cliente conectado");
-  socket.emit("messages", messages);
+  await getMensajes().then((res) => socket.emit("messages", res));
   socket.emit("products", container.getAll());
 
-  socket.on("new-message", (data) => {
+  socket.on("new-message", async (data) => {
     const dateMessage = new Date();
-    messages.push({
+    await addMensaje({
       email: data.email,
       text: data.text,
       date:
@@ -33,7 +32,7 @@ io.on("connection", (socket) => {
         ":" +
         dateMessage.getSeconds(),
     });
-    io.sockets.emit("messages", messages);
+    io.sockets.emit("messages", await getMensajes());
   });
 
   socket.on("new-product", (data) => {

@@ -1,11 +1,11 @@
-<div style="background-color: rgb(191, 191, 209); width: 50%;height: 40vh; display: flex ; justify-content: center;">
+<div style="background-color: rgb(191, 191, 209); width: 50%;height: auto; display: flex ; justify-content: center;">
     <div>
         <h1 style="color: blue">Centro de Mensajes</h1>
         <br />
 
         <form id="formularioChat">
             <div>
-                <input id="email" type="text" name="email" placeholder="Email" />
+                <input id="email" type="email" name="email" placeholder="Email" required />
             </div>
             <br>
             <div>
@@ -25,9 +25,9 @@
                 const html = data
                     .map((elemento) => {
                         return `<div>
-                <strong style='color:blue; font-weight: bold;'>${elemento.email}</strong>:
-                [${elemento.date}]
-                <em>${elemento.text}</em></div>
+                <strong style='color:blue;'>${elemento.email}</strong>
+                <b style='color:red'> [${elemento.date}]</b> 
+                : <em style='font-weight: italic;color:green'>${elemento.text}</em></div>
         `;
                     })
                     .join(" ");
